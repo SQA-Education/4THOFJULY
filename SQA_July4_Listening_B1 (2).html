@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Independence Day — Listening (B1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF7EF;
+    --paper-2:#F4ECDD;
+    --night:#16213E;
+    --night-2:#22304F;
+    --ink:#1C2333;
+    --muted:#6B6456;
+    --line:#E3D8C5;
+    --brick:#C03A2B;
+    --brick-deep:#9E2C20;
+    --gold:#E0A23C;
+    --gold-soft:#F3D69B;
+    --green:#3F7A52;
+    --green-soft:#E3EFE5;
+    --shadow:0 14px 40px -22px rgba(28,35,51,.55);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Public Sans",system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;
+    background:
+      radial-gradient(120% 90% at 15% 8%, rgba(224,162,60,.18), transparent 42%),
+      radial-gradient(120% 90% at 85% 4%, rgba(192,58,43,.20), transparent 46%),
+      linear-gradient(160deg,#16213E 0%,#1C2A4A 55%,#22304F 100%);
+    color:#FBF7EF;
+    overflow:hidden;
+  }
+  .hero-inner{max-width:760px;margin:0 auto;padding:54px 22px 60px;position:relative;z-index:2}
+  .eyebrow{
+    font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
+    font-weight:600;color:var(--gold-soft);margin:0 0 14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(243,214,155,.5),transparent)}
+  .hero h1{
+    font-family:"Fraunces",serif;font-weight:600;
+    font-size:clamp(2.3rem,7vw,3.6rem);line-height:1.04;
+    margin:0 0 14px;letter-spacing:-.01em;
+  }
+  .hero h1 .em{color:var(--gold-soft);font-style:italic}
+  .hero p.lead{margin:0;max-width:46ch;color:#D7DCE8;font-size:1.05rem}
+  .level-chip{
+    position:absolute;top:22px;right:22px;z-index:3;
+    font-size:.72rem;font-weight:700;letter-spacing:.12em;
+    color:var(--night);background:var(--gold-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  /* sparks */
+  .spark{position:absolute;border-radius:50%;opacity:.0;z-index:1}
+  .playing .spark{animation:twinkle 2.6s ease-in-out infinite}
+  .spark.s1{width:5px;height:5px;background:var(--gold-soft);top:26%;left:22%;animation-delay:.1s}
+  .spark.s2{width:4px;height:4px;background:#F6BFB6;top:18%;left:62%;animation-delay:.5s}
+  .spark.s3{width:6px;height:6px;background:var(--gold);top:40%;left:80%;animation-delay:.9s}
+  .spark.s4{width:3px;height:3px;background:#fff;top:30%;left:46%;animation-delay:1.3s}
+  .spark.s5{width:5px;height:5px;background:#F6BFB6;top:14%;left:36%;animation-delay:1.7s}
+  @keyframes twinkle{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.9;transform:scale(1)}}
+
+  /* ---------- Sections ---------- */
+  section{margin-top:38px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+  .sec-num{
+    font-family:"Fraunces",serif;font-weight:600;font-size:1rem;
+    color:#fff;background:var(--brick);
+    width:30px;height:30px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;flex:none;
+    box-shadow:0 4px 10px -4px rgba(192,58,43,.6);
+  }
+  .sec-head h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.5rem;margin:0;line-height:1.1}
+  .sec-head .hint{margin:3px 0 0;font-size:.86rem;color:var(--muted)}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+
+  /* ---------- Vocab ---------- */
+  .vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .vchip{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:12px;
+    padding:12px 14px;cursor:pointer;transition:.18s;
+  }
+  .vchip:hover{transform:translateY(-2px);border-color:var(--gold)}
+  .vchip .w{font-weight:700;font-size:1rem}
+  .vchip .d{font-size:.85rem;color:var(--muted);margin-top:3px;display:none}
+  .vchip.open{background:#fff;border-color:var(--gold)}
+  .vchip.open .d{display:block}
+  .vchip .tap{font-size:.72rem;color:var(--brick);font-weight:600;margin-top:4px}
+  .vchip.open .tap{display:none}
+
+  /* ---------- Player ---------- */
+  .player{
+    background:linear-gradient(160deg,#16213E,#243556);
+    border-radius:18px;padding:24px;color:#EDEFF5;
+    position:relative;overflow:hidden;
+  }
+  .player .glow{position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 0,rgba(224,162,60,.16),transparent 60%);opacity:0;transition:.4s}
+  .player.playing .glow{opacity:1}
+  .player-top{display:flex;align-items:center;gap:16px;position:relative;z-index:2}
+  .playbtn{
+    width:64px;height:64px;border-radius:50%;border:none;flex:none;cursor:pointer;
+    background:var(--gold);color:var(--night);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 22px -8px rgba(224,162,60,.8);transition:.18s;
+  }
+  .playbtn:hover{transform:scale(1.05)}
+  .playbtn:active{transform:scale(.97)}
+  .playbtn svg{width:26px;height:26px}
+  .player-meta{flex:1}
+  .player-meta .t{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem}
+  .player-meta .s{font-size:.85rem;color:#AEB7CC}
+  .eq{display:flex;align-items:flex-end;gap:3px;height:20px;margin-top:7px}
+  .eq span{width:3px;background:var(--gold-soft);height:5px;border-radius:2px}
+  .player.playing .eq span{animation:eq 1s ease-in-out infinite}
+  .eq span:nth-child(2){animation-delay:.15s}
+  .eq span:nth-child(3){animation-delay:.3s}
+  .eq span:nth-child(4){animation-delay:.45s}
+  .eq span:nth-child(5){animation-delay:.6s}
+  @keyframes eq{0%,100%{height:5px}50%{height:18px}}
+  .player-ctrls{display:flex;align-items:center;gap:18px;margin-top:20px;position:relative;z-index:2;flex-wrap:wrap}
+  .iconbtn{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    color:#EDEFF5;border-radius:10px;padding:9px 14px;cursor:pointer;
+    display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:600;
+    font-family:inherit;transition:.18s;
+  }
+  .iconbtn:hover{background:rgba(255,255,255,.16)}
+  .iconbtn svg{width:16px;height:16px}
+  .speed{display:flex;align-items:center;gap:10px;flex:1;min-width:180px}
+  .speed label{font-size:.82rem;color:#AEB7CC;white-space:nowrap}
+  .speed input{flex:1;accent-color:var(--gold)}
+  .speed .val{font-variant-numeric:tabular-nums;font-weight:700;font-size:.85rem;width:34px;text-align:right}
+
+  /* ---------- Questions ---------- */
+  .q{padding:18px 0;border-bottom:1px solid var(--line)}
+  .q:last-child{border-bottom:none;padding-bottom:0}
+  .q:first-child{padding-top:4px}
+  .q .qtext{font-weight:600;margin:0 0 12px;display:flex;gap:10px}
+  .q .qtext .n{color:var(--brick);font-weight:700;flex:none}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{
+    display:flex;align-items:center;gap:11px;
+    border:1px solid var(--line);border-radius:11px;padding:11px 14px;
+    cursor:pointer;transition:.15s;background:#fff;font-size:.96rem;
+  }
+  .opt:hover{border-color:var(--gold);background:#FFFDF8}
+  .opt .mk{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;display:flex;align-items:center;justify-content:center}
+  .opt.sel{border-color:var(--brick);background:#FFF6F4}
+  .opt.sel .mk{border-color:var(--brick);background:var(--brick)}
+  .opt.sel .mk::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+  .opt.correct{border-color:var(--green);background:var(--green-soft)}
+  .opt.correct .mk{border-color:var(--green);background:var(--green)}
+  .opt.wrong{border-color:var(--brick);background:#FCEEEC}
+  .opt.locked{cursor:default;pointer-events:none}
+  .gap-in{
+    font-family:inherit;font-size:.96rem;padding:10px 12px;
+    border:1px solid var(--line);border-radius:10px;width:200px;max-width:100%;
+  }
+  .gap-in:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+  .gap-in.correct{border-color:var(--green);background:var(--green-soft)}
+  .gap-in.wrong{border-color:var(--brick);background:#FCEEEC}
+  .feedback{font-size:.85rem;margin-top:9px;font-weight:600;display:none}
+  .feedback.show{display:block}
+  .feedback.ok{color:var(--green)}
+  .feedback.no{color:var(--brick-deep)}
+
+  .check-row{display:flex;align-items:center;gap:16px;margin-top:22px;flex-wrap:wrap}
+  .btn{
+    background:var(--brick);color:#fff;border:none;border-radius:12px;
+    padding:13px 26px;font-size:1rem;font-weight:700;font-family:inherit;
+    cursor:pointer;transition:.18s;box-shadow:0 8px 20px -8px rgba(192,58,43,.7);
+  }
+  .btn:hover{background:var(--brick-deep);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--brick);box-shadow:none;border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--paper-2);transform:none}
+  .score{
+    font-family:"Fraunces",serif;font-weight:600;font-size:1.05rem;
+    display:none;align-items:center;gap:8px;
+  }
+  .score.show{display:flex}
+  .score .badge{background:var(--gold-soft);color:var(--night);padding:4px 12px;border-radius:999px;font-size:.95rem}
+
+  /* ---------- Transcript ---------- */
+  .transcript{margin-top:14px;display:none}
+  .transcript.show{display:block}
+  .transcript p{
+    background:var(--paper-2);border-left:3px solid var(--gold);
+    padding:16px 18px;border-radius:0 12px 12px 0;margin:0;font-size:1.02rem;line-height:1.85;
+  }
+  .transcript .sent{transition:.2s;padding:1px 2px;border-radius:3px}
+  .transcript .sent.active{background:var(--gold-soft);color:var(--night)}
+
+  /* ---------- Discussion ---------- */
+  .discuss textarea{
+    width:100%;min-height:120px;resize:vertical;font-family:inherit;font-size:1rem;
+    border:1px solid var(--line);border-radius:12px;padding:14px;line-height:1.6;
+  }
+  .discuss textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+  .saved-note{font-size:.82rem;color:var(--green);margin-top:8px;display:none}
+  .saved-note.show{display:block}
+  .prompt-list{margin:0 0 14px;padding-left:20px}
+  .prompt-list li{margin-bottom:6px}
+
+  /* ---------- Welcome gate ---------- */
+  body.locked{overflow:hidden}
+  .gate{position:fixed;inset:0;z-index:50;background:linear-gradient(160deg,#16213E,#1C2A4A 60%,#22304F);display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+  .gate.hidden{display:none}
+  .gate-card{background:var(--paper);border-radius:20px;max-width:440px;width:100%;padding:34px 30px;box-shadow:0 30px 80px -30px rgba(0,0,0,.65);text-align:center}
+  .gate-card .badge2{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--brick)}
+  .gate-card h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.85rem;margin:10px 0 8px}
+  .gate-card p.sub{color:var(--muted);margin:0 0 22px;font-size:.95rem;line-height:1.55}
+  .gate-field{text-align:left;margin-bottom:14px}
+  .gate-field label{display:block;font-size:.82rem;font-weight:600;margin-bottom:6px}
+  .gate-field input{width:100%;font-family:inherit;font-size:1rem;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:#fff}
+  .gate-field input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+  .gate-err{color:var(--brick-deep);font-size:.84rem;font-weight:600;min-height:18px;text-align:left;margin-bottom:6px}
+  .gate .btn{width:100%;justify-content:center}
+  .gate-status{font-size:.82rem;margin-top:12px;min-height:16px;font-weight:600}
+  .gate-status.ok{color:var(--green)}
+  .gate-status.no{color:var(--brick-deep)}
+
+  /* ---------- Celebration ---------- */
+  .celebrate{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:#0E1428;overflow:hidden}
+  .celebrate.show{display:flex}
+  .celebrate canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .celebrate-content{position:relative;z-index:2;text-align:center;padding:28px}
+  .cel-star{font-size:2rem;color:var(--gold-soft);margin-bottom:4px}
+  .celebrate h2{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(2.3rem,8vw,4rem);line-height:1.05;margin:0 0 14px;color:#fff;text-shadow:0 2px 34px rgba(224,162,60,.55)}
+  .celebrate p{font-size:1.12rem;color:#E9DBBC;margin:0 auto 26px;max-width:32ch;line-height:1.5}
+  .cel-btn{background:var(--gold);color:var(--night)}
+  .cel-btn:hover{background:var(--gold-soft)}
+
+  footer{margin-top:50px;text-align:center;color:var(--muted);font-size:.82rem}
+  footer .reset{background:none;border:none;color:var(--brick);font:inherit;cursor:pointer;text-decoration:underline;font-size:.82rem}
+
+  @media (max-width:560px){
+    .hero-inner{padding:46px 20px 50px}
+    .card{padding:18px}
+    .playbtn{width:56px;height:56px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="badge2">SQA &middot; July 4th Listening</div>
+    <h2>Welcome!</h2>
+    <p class="sub">Tell us who you are and we'll get started. Your teacher uses this to see who completed the activity.</p>
+    <div class="gate-field">
+      <label for="gName">Your name</label>
+      <input type="text" id="gName" autocomplete="name" placeholder="First and last name">
+    </div>
+    <div class="gate-field">
+      <label for="gEmail">Your email</label>
+      <input type="email" id="gEmail" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="gate-err" id="gErr"></div>
+    <button class="btn" id="gStart">Start the activity</button>
+    <div class="gate-status" id="gStatus"></div>
+  </div>
+</div>
+<header class="hero" id="hero">
+  <span class="level-chip">LEVEL B1</span>
+  <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span><span class="spark s5"></span>
+  <div class="hero-inner">
+    <p class="eyebrow">Listening Comprehension · July 4th</p>
+    <h1>The Fourth of <span class="em">July</span></h1>
+    <p class="lead">Listen to a short talk about Independence Day in the United States, then answer the questions. You can change the speed and listen as many times as you need.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 1. VOCAB -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">1</span>
+      <div>
+        <h2>Warm-up words</h2>
+        <p class="hint">Tap a word to see its meaning before you listen.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="vocab-grid" id="vocab"></div>
+    </div>
+  </section>
+
+  <!-- 2. PLAYER -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">2</span>
+      <div>
+        <h2>Listen</h2>
+        <p class="hint">Listen twice — first for the general idea, then for the details.</p>
+      </div>
+    </div>
+    <div class="player" id="player">
+      <div class="glow"></div>
+      <div class="player-top">
+        <button class="playbtn" id="playBtn" aria-label="Play">
+          <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="player-meta">
+          <div class="t">A talk about Independence Day</div>
+          <div class="s" id="playStatus">Ready to play</div>
+          <div class="eq"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="player-ctrls">
+        <button class="iconbtn" id="replayBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v4h4"/></svg>
+          Replay
+        </button>
+        <div class="speed">
+          <label for="rate">Speed</label>
+          <input type="range" id="rate" min="0.6" max="1" step="0.05" value="0.85">
+          <span class="val" id="rateVal">0.85×</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. COMPREHENSION -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">3</span>
+      <div>
+        <h2>Comprehension</h2>
+        <p class="hint">Answer all the questions, then check your score.</p>
+      </div>
+    </div>
+    <div class="card" id="quiz"></div>
+    <div class="check-row">
+      <button class="btn" id="checkBtn">Check answers</button>
+      <div class="score" id="score"><span>You got</span><span class="badge" id="scoreBadge">0 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- 4. TRANSCRIPT -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">4</span>
+      <div>
+        <h2>Read along</h2>
+        <p class="hint">Reveal the text after you have tried the questions.</p>
+      </div>
+    </div>
+    <button class="btn ghost" id="transBtn">Show transcript</button>
+    <div class="transcript" id="transcript"><p id="transcriptText"></p></div>
+  </section>
+
+  <!-- 5. SPEAKING -->
+  <section class="discuss">
+    <div class="sec-head">
+      <span class="sec-num">5</span>
+      <div>
+        <h2>Your turn</h2>
+        <p class="hint">Talk with your class, or write a few sentences below.</p>
+      </div>
+    </div>
+    <div class="card">
+      <ul class="prompt-list">
+        <li>Does your home country have a national day or independence day?</li>
+        <li>When is it, and how do people celebrate?</li>
+        <li>What is your favourite way to celebrate a special day?</li>
+      </ul>
+      <textarea id="writing" placeholder="Write your answer here..."></textarea>
+      <div class="saved-note" id="savedNote">Saved on this device.</div>
+    </div>
+    <div class="check-row" style="justify-content:center">
+      <button class="btn" id="finishBtn">Finish &amp; celebrate</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>SQA Education Foundation · Independence Day listening · Level B1</p>
+    <button class="reset" id="resetBtn">Clear my answers</button>
+  </footer>
+</div>
+
+<div class="celebrate" id="celebrate" aria-hidden="true">
+  <canvas id="fw"></canvas>
+  <div class="celebrate-content">
+    <div class="cel-star">&#9733;</div>
+    <h2>Happy 4th of July!</h2>
+    <p id="celMsg">Wonderful work today.</p>
+    <button class="btn cel-btn" id="celClose">Back to the activity</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORE = "sqa_july4_listening_b1";
+
+  /* ---------- Capture config ----------
+     To collect names + emails, create a Google Form with two short-answer
+     questions (Name, Email), then replace the three REPLACE_ values below.
+     - endpoint: the form's URL ending in /formResponse
+     - nameField / emailField: the entry.XXXXX IDs for each question
+     Until configured, the gate still works and just lets students start. */
+  var CAPTURE = {
+    enabled: true,
+    endpoint: "https://docs.google.com/forms/d/e/1FAIpQLSez6LcDLOU4b9-5GMRde5OdotUr3Js3kvshnZOMedOXAkBJYw/formResponse",
+    nameField: "entry.1574249499",
+    emailField: "entry.463372531",
+    sourceField: "entry.1234346146"
+  };
+  function getParams(){ try{ return new URLSearchParams(location.search); }catch(e){ return new URLSearchParams(); } }
+
+  /* ---------- Content ---------- */
+  var SENTENCES = [
+    "Every year on July fourth, people across the United States celebrate Independence Day.",
+    "This holiday marks an important moment in American history.",
+    "On July fourth, 1776, the country declared its independence from Great Britain.",
+    "The leaders signed a famous document called the Declaration of Independence.",
+    "Today, July fourth is a happy summer holiday.",
+    "Many families spend the day outside.",
+    "They have barbecues in their gardens or in the park.",
+    "They cook hamburgers and hot dogs, and they eat watermelon and ice cream.",
+    "Some cities organize parades with music and flags.",
+    "In the evening, people wait for the most exciting part of the day: the fireworks.",
+    "When the sky becomes dark, colourful lights explode above the cities.",
+    "Families sit together, watch the show, and enjoy the warm summer night."
+  ];
+
+  var VOCAB = [
+    {w:"independence", d:"freedom from the control of another country"},
+    {w:"to declare", d:"to say something officially and clearly"},
+    {w:"a document", d:"an official paper with important information"},
+    {w:"a barbecue", d:"a meal where food is cooked outside over a fire"},
+    {w:"a parade", d:"a public celebration where people walk through the streets"},
+    {w:"fireworks", d:"colourful lights that explode in the sky at night"}
+  ];
+
+  var QUESTIONS = [
+    {type:"mc", q:"When do Americans celebrate Independence Day?",
+     opts:["On June fourth","On July fourth","On July fourteenth"], answer:1},
+    {type:"mc", q:"In 1776, the United States declared independence from which country?",
+     opts:["France","Spain","Great Britain"], answer:2},
+    {type:"mc", q:"What is the name of the famous document?",
+     opts:["The Declaration of Independence","The Summer Holiday Act","The Freedom Letter"], answer:0},
+    {type:"tf", q:"Many families spend Independence Day outside.", answer:true},
+    {type:"tf", q:"People only eat ice cream and nothing else at barbecues.", answer:false},
+    {type:"gap", q:"Some cities organize ______ with music and flags.", answer:["parades","parade"]},
+    {type:"gap", q:"In the evening, people wait for the ______.", answer:["fireworks","firework"]}
+  ];
+
+  /* ---------- State ---------- */
+  var state = load();
+  function load(){ try{ return JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ return {}; } }
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} }
+
+  /* ---------- Vocab render ---------- */
+  var vWrap = document.getElementById("vocab");
+  VOCAB.forEach(function(v){
+    var c = document.createElement("div");
+    c.className = "vchip";
+    c.innerHTML = '<div class="w">'+v.w+'</div><div class="d">'+v.d+'</div><div class="tap">Tap to reveal</div>';
+    c.addEventListener("click", function(){ c.classList.toggle("open"); });
+    vWrap.appendChild(c);
+  });
+
+  /* ---------- Quiz render ---------- */
+  var quizWrap = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var q = document.createElement("div");
+    q.className = "q";
+    var head = '<p class="qtext"><span class="n">'+(qi+1)+'.</span><span>'+item.q+'</span></p>';
+
+    if(item.type === "gap"){
+      var saved = (state.answers && state.answers[qi] != null) ? state.answers[qi] : "";
+      q.innerHTML = head + '<input class="gap-in" data-qi="'+qi+'" type="text" placeholder="Type one word" value="'+escapeAttr(saved)+'"><div class="feedback" data-fb="'+qi+'"></div>';
+    } else {
+      var opts = (item.type === "tf") ? ["True","False"] : item.opts;
+      var html = '<div class="opts">';
+      opts.forEach(function(o, oi){
+        html += '<div class="opt" data-qi="'+qi+'" data-oi="'+oi+'"><span class="mk"></span><span>'+o+'</span></div>';
+      });
+      html += '</div><div class="feedback" data-fb="'+qi+'"></div>';
+      q.innerHTML = head + html;
+    }
+    quizWrap.appendChild(q);
+  });
+
+  // restore selected options
+  quizWrap.querySelectorAll(".opt").forEach(function(o){
+    var qi = +o.getAttribute("data-qi"), oi = +o.getAttribute("data-oi");
+    if(state.answers && state.answers[qi] === oi) o.classList.add("sel");
+    o.addEventListener("click", function(){
+      if(o.classList.contains("locked")) return;
+      quizWrap.querySelectorAll('.opt[data-qi="'+qi+'"]').forEach(function(x){ x.classList.remove("sel"); });
+      o.classList.add("sel");
+      state.answers = state.answers || {};
+      state.answers[qi] = oi;
+      save();
+    });
+  });
+  quizWrap.querySelectorAll(".gap-in").forEach(function(inp){
+    inp.addEventListener("input", function(){
+      var qi = +inp.getAttribute("data-qi");
+      state.answers = state.answers || {};
+      state.answers[qi] = inp.value;
+      save();
+    });
+  });
+
+  /* ---------- Check answers ---------- */
+  document.getElementById("checkBtn").addEventListener("click", function(){
+    var correct = 0;
+    QUESTIONS.forEach(function(item, qi){
+      var fb = quizWrap.querySelector('[data-fb="'+qi+'"]');
+      var got = state.answers ? state.answers[qi] : undefined;
+      var isRight = false;
+
+      if(item.type === "gap"){
+        var inp = quizWrap.querySelector('.gap-in[data-qi="'+qi+'"]');
+        var val = (got||"").toString().trim().toLowerCase();
+        isRight = item.answer.indexOf(val) !== -1;
+        inp.classList.remove("correct","wrong");
+        inp.classList.add(isRight ? "correct" : "wrong");
+      } else {
+        var ansIndex = (item.type === "tf") ? (item.answer ? 0 : 1) : item.answer;
+        isRight = (got === ansIndex);
+        quizWrap.querySelectorAll('.opt[data-qi="'+qi+'"]').forEach(function(o){
+          var oi = +o.getAttribute("data-oi");
+          o.classList.add("locked");
+          o.classList.remove("correct","wrong");
+          if(oi === ansIndex) o.classList.add("correct");
+          else if(oi === got) o.classList.add("wrong");
+        });
+      }
+      fb.className = "feedback show " + (isRight ? "ok" : "no");
+      fb.textContent = isRight ? "Correct!" : "Not quite — listen again and try the transcript.";
+      if(isRight) correct++;
+    });
+
+    var badge = document.getElementById("scoreBadge");
+    badge.textContent = correct + " / " + QUESTIONS.length;
+    document.getElementById("score").classList.add("show");
+    state.score = correct;
+    save();
+  });
+
+  /* ---------- Transcript ---------- */
+  var transcript = document.getElementById("transcript");
+  var transText = document.getElementById("transcriptText");
+  SENTENCES.forEach(function(s, i){
+    var span = document.createElement("span");
+    span.className = "sent";
+    span.setAttribute("data-si", i);
+    span.textContent = s + " ";
+    transText.appendChild(span);
+  });
+  document.getElementById("transBtn").addEventListener("click", function(){
+    var open = transcript.classList.toggle("show");
+    this.textContent = open ? "Hide transcript" : "Show transcript";
+  });
+  function highlight(i){
+    transText.querySelectorAll(".sent").forEach(function(s){ s.classList.remove("active"); });
+    if(i >= 0){
+      var el = transText.querySelector('[data-si="'+i+'"]');
+      if(el) el.classList.add("active");
+    }
+  }
+
+  /* ---------- Speech ---------- */
+  var synth = window.speechSynthesis;
+  var supported = !!synth && typeof SpeechSynthesisUtterance !== "undefined";
+  var player = document.getElementById("player");
+  var hero = document.getElementById("hero");
+  var playBtn = document.getElementById("playBtn");
+  var playIcon = document.getElementById("playIcon");
+  var statusEl = document.getElementById("playStatus");
+  var rate = document.getElementById("rate");
+  var rateVal = document.getElementById("rateVal");
+
+  var idx = 0, mode = "idle", voice = null, manualStop = false;
+  var PLAY_PATH = "M8 5v14l11-7z";
+  var PAUSE_PATH = "M7 5h3v14H7zM14 5h3v14h-3z";
+
+  function pickVoice(){
+    if(!supported) return;
+    var vs = synth.getVoices();
+    voice = vs.filter(function(v){ return /en[-_]US/i.test(v.lang); })[0]
+         || vs.filter(function(v){ return /^en/i.test(v.lang); })[0]
+         || vs[0] || null;
+  }
+  if(supported){
+    pickVoice();
+    if(synth.onvoiceschanged !== undefined) synth.onvoiceschanged = pickVoice;
+  } else {
+    statusEl.textContent = "Audio is not supported in this browser.";
+    playBtn.disabled = true;
+  }
+
+  rate.addEventListener("input", function(){ rateVal.textContent = (+rate.value).toFixed(2) + "×"; });
+
+  function setMode(m){
+    mode = m;
+    var playing = (m === "playing");
+    player.classList.toggle("playing", playing);
+    hero.classList.toggle("playing", playing);
+    playIcon.setAttribute("d", (playing || m === "loading") ? PAUSE_PATH : PLAY_PATH);
+    playBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
+    if(m === "idle") statusEl.textContent = "Ready to play";
+    else if(m === "playing") statusEl.textContent = "Playing — sentence " + (idx+1) + " of " + SENTENCES.length;
+    else if(m === "paused") statusEl.textContent = "Paused";
+  }
+
+  function speakFrom(i){
+    if(!supported) return;
+    manualStop = true; synth.cancel();
+    setTimeout(function(){ manualStop = false; idx = i; speakNext(); }, 60);
+  }
+  function speakNext(){
+    if(idx >= SENTENCES.length){ finish(); return; }
+    setMode("playing");
+    highlight(idx);
+    var u = new SpeechSynthesisUtterance(SENTENCES[idx]);
+    if(voice) u.voice = voice;
+    u.lang = voice ? voice.lang : "en-US";
+    u.rate = +rate.value;
+    u.pitch = 1;
+    u.onend = function(){
+      if(manualStop) return;
+      idx++;
+      speakNext();
+    };
+    u.onerror = function(){ if(!manualStop) finish(); };
+    synth.speak(u);
+  }
+  function finish(){
+    manualStop = true; synth.cancel();
+    idx = 0; setMode("idle"); highlight(-1);
+    setTimeout(function(){ manualStop = false; }, 60);
+  }
+
+  playBtn.addEventListener("click", function(){
+    if(!supported) return;
+    if(mode === "idle"){ speakFrom(0); }
+    else if(mode === "playing"){ synth.pause(); setMode("paused"); }
+    else if(mode === "paused"){ synth.resume(); setMode("playing"); }
+  });
+  document.getElementById("replayBtn").addEventListener("click", function(){ speakFrom(0); });
+
+  // Safety: stop audio when leaving the page
+  window.addEventListener("beforeunload", function(){ if(supported) synth.cancel(); });
+
+  /* ---------- Writing autosave ---------- */
+  var writing = document.getElementById("writing");
+  var savedNote = document.getElementById("savedNote");
+  if(state.writing) writing.value = state.writing;
+  var saveTimer;
+  writing.addEventListener("input", function(){
+    state.writing = writing.value; save();
+    savedNote.classList.add("show");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ savedNote.classList.remove("show"); }, 1600);
+  });
+
+  /* ---------- Reset ---------- */
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    if(!confirm("Clear all your answers on this device?")) return;
+    try{ localStorage.removeItem(STORE); }catch(e){}
+    location.reload();
+  });
+
+  /* ---------- Welcome gate + capture ---------- */
+  var gate = document.getElementById("gate");
+  var gName = document.getElementById("gName");
+  var gEmail = document.getElementById("gEmail");
+  var gErr = document.getElementById("gErr");
+  var gStatus = document.getElementById("gStatus");
+  var gStart = document.getElementById("gStart");
+  var qp = getParams();
+
+  document.body.classList.add("locked");
+
+  // Pre-fill from URL (e.g. Klaviyo personalization tags) or from a previous visit
+  gName.value = qp.get("name") || state.name || "";
+  gEmail.value = qp.get("email") || state.email || "";
+
+  function openActivity(){ gate.classList.add("hidden"); document.body.classList.remove("locked"); }
+  function validEmail(e){ return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e); }
+
+  if(state.gatePassed){ openActivity(); }
+
+  gStart.addEventListener("click", function(){
+    var n = gName.value.trim(), e = gEmail.value.trim();
+    gErr.textContent = "";
+    if(n.length < 2){ gErr.textContent = "Please enter your name."; gName.focus(); return; }
+    if(!validEmail(e)){ gErr.textContent = "Please enter a valid email address."; gEmail.focus(); return; }
+    state.name = n; state.email = e; state.gatePassed = true; save();
+    submitCapture(n, e);
+  });
+  gEmail.addEventListener("keydown", function(ev){ if(ev.key === "Enter") gStart.click(); });
+
+  function submitCapture(n, e){
+    // Not configured yet -> don't block the student
+    if(!CAPTURE.enabled || CAPTURE.endpoint.indexOf("REPLACE_FORM_ID") !== -1){ openActivity(); return; }
+    gStart.disabled = true;
+    gStatus.className = "gate-status"; gStatus.textContent = "Saving...";
+    var body = new URLSearchParams();
+    body.append(CAPTURE.nameField, n);
+    body.append(CAPTURE.emailField, e);
+    var src = qp.get("src");
+    if(src && CAPTURE.sourceField.indexOf("REPLACE") === -1) body.append(CAPTURE.sourceField, src);
+    var done = false;
+    fetch(CAPTURE.endpoint, {
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"application/x-www-form-urlencoded"},
+      body: body.toString()
+    }).then(function(){ if(!done){ done = true; showCaptureOk(); } })
+      .catch(function(){ if(!done){ done = true; showCaptureFail(); } });
+    // no-cors resolves opaque; guard against a hang
+    setTimeout(function(){ if(!done){ done = true; openActivity(); } }, 3000);
+  }
+  function showCaptureOk(){ gStatus.className = "gate-status ok"; gStatus.textContent = "Thanks! Starting your activity..."; setTimeout(openActivity, 600); }
+  function showCaptureFail(){ gStatus.className = "gate-status no"; gStatus.textContent = "We couldn't save that, but you can still start."; setTimeout(openActivity, 1400); }
+
+  /* ---------- Finish + fireworks ---------- */
+  var celebrate = document.getElementById("celebrate");
+  var celMsg = document.getElementById("celMsg");
+  var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  document.getElementById("finishBtn").addEventListener("click", function(){
+    if(supported) synth.cancel();
+    var first = (state.name || "").trim().split(/\s+/)[0];
+    var msg = first ? ("Wonderful work, " + first + "!") : "Wonderful work today!";
+    if(typeof state.score === "number"){ msg += " You scored " + state.score + " out of " + QUESTIONS.length + "."; }
+    celMsg.textContent = msg;
+    celebrate.classList.add("show");
+    celebrate.setAttribute("aria-hidden", "false");
+    document.body.classList.add("locked");
+    startFireworks();
+  });
+  document.getElementById("celClose").addEventListener("click", function(){
+    stopFireworks();
+    celebrate.classList.remove("show");
+    celebrate.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("locked");
+  });
+
+  var fwCanvas, fwCtx, fwW = 0, fwH = 0, fwParticles = [], fwRaf = null, fwTimer = null;
+  var FW_COLORS = ["#E0A23C","#F3D69B","#C03A2B","#FBF7EF","#7FB0E8"];
+  function fwRand(a,b){ return a + Math.random()*(b-a); }
+  function fwPick(a){ return a[(Math.random()*a.length)|0]; }
+  function fwResize(){
+    if(!fwCanvas) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    fwW = celebrate.clientWidth; fwH = celebrate.clientHeight;
+    fwCanvas.width = fwW*dpr; fwCanvas.height = fwH*dpr;
+    fwCtx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function fwBurst(x,y){
+    var color = fwPick(FW_COLORS), n = 72;
+    for(var i=0;i<n;i++){
+      var ang = (Math.PI*2)*(i/n), sp = fwRand(1.4,5.4);
+      fwParticles.push({x:x,y:y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,a:1,decay:fwRand(0.008,0.02),color:color,r:fwRand(1.4,3)});
+    }
+  }
+  function fwLoop(){
+    fwCtx.globalCompositeOperation = "source-over";
+    fwCtx.fillStyle = "rgba(14,20,40,0.22)";
+    fwCtx.fillRect(0,0,fwW,fwH);
+    fwCtx.globalCompositeOperation = "lighter";
+    for(var i=fwParticles.length-1;i>=0;i--){
+      var p = fwParticles[i];
+      p.vy += 0.04; p.x += p.vx; p.y += p.vy; p.a -= p.decay;
+      if(p.a <= 0){ fwParticles.splice(i,1); continue; }
+      fwCtx.globalAlpha = p.a < 0 ? 0 : p.a;
+      fwCtx.fillStyle = p.color;
+      fwCtx.beginPath(); fwCtx.arc(p.x,p.y,p.r,0,Math.PI*2); fwCtx.fill();
+    }
+    fwCtx.globalAlpha = 1;
+    fwRaf = requestAnimationFrame(fwLoop);
+  }
+  function fwStaticBurst(x,y){
+    var color = fwPick(FW_COLORS), n = 42;
+    for(var i=0;i<n;i++){
+      var ang = (Math.PI*2)*(i/n), d = fwRand(18,72);
+      fwCtx.globalAlpha = fwRand(0.4,0.9); fwCtx.fillStyle = color;
+      fwCtx.beginPath(); fwCtx.arc(x+Math.cos(ang)*d, y+Math.sin(ang)*d, 2.2, 0, Math.PI*2); fwCtx.fill();
+    }
+    fwCtx.globalAlpha = 1;
+  }
+  function startFireworks(){
+    fwCanvas = document.getElementById("fw");
+    fwCtx = fwCanvas.getContext("2d");
+    fwResize();
+    window.addEventListener("resize", fwResize);
+    fwParticles = [];
+    if(reduceMotion){
+      fwCtx.fillStyle = "#0E1428"; fwCtx.fillRect(0,0,fwW,fwH);
+      for(var k=0;k<5;k++){ fwStaticBurst(fwRand(fwW*0.15,fwW*0.85), fwRand(fwH*0.2,fwH*0.6)); }
+      return;
+    }
+    fwBurst(fwRand(fwW*0.3,fwW*0.7), fwRand(fwH*0.3,fwH*0.5));
+    fwTimer = setInterval(function(){ fwBurst(fwRand(fwW*0.12,fwW*0.88), fwRand(fwH*0.18,fwH*0.55)); }, 650);
+    fwRaf = requestAnimationFrame(fwLoop);
+  }
+  function stopFireworks(){
+    if(fwRaf){ cancelAnimationFrame(fwRaf); fwRaf = null; }
+    if(fwTimer){ clearInterval(fwTimer); fwTimer = null; }
+    window.removeEventListener("resize", fwResize);
+    fwParticles = [];
+    if(fwCtx && fwW){ fwCtx.clearRect(0,0,fwW,fwH); }
+  }
+
+  /* ---------- helpers ---------- */
+  function escapeAttr(s){ return (s||"").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+})();
+</script>
+</body>
+</html>
